@@ -81,10 +81,3 @@
 - 修改 `src/extension.ts` 里的 `DEFAULT_EXCLUDES`
 
 ---
-
-## 开发/打包/发布
-
-请查看：`USAGE_AND_RELEASE.md`
-
-- **A 方案**：本地自用（打包 `.vsix` 安装）
-- **B 方案**：发布到 VS Code Marketplace
