@@ -30,6 +30,20 @@
 
 > 说明：该方式会导出“扫描到的真实目录结构快照”（不包含 Webview 内的编辑结果）。
 
+---
+
+## 展示效果
+
+### 生成项目蓝图
+
+![alt text](image-2.png)
+
+### 在蓝图中打开
+
+![alt text](image-3.png)
+
+---
+
 ### Webview 快捷键
 
 - **Enter**：新建文件夹（同级）
@@ -52,7 +66,7 @@
 
 - 导出位置：你右键选择的那个文件夹目录
 - 导出文件名：默认 `blueprint.md`，如冲突则自动递增 `blueprint-1.md`、`blueprint-2.md`...
-- 导出内容：Linux `tree` 风格的 ASCII 目录树（纯文本，不包含 ``` 包裹）
+- 导出内容：Linux `tree` 风格的 ASCII 目录树
 
 导出有两种来源：
 
