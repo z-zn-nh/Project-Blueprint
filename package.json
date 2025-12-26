@@ -12,6 +12,7 @@
     "url": "https://github.com/z-zn-nh/Project-Blueprint/issues"
   },
   "license": "MIT",
+  "icon": "media/account_tree_128dp_1F1F1F_FILL0_wght400_GRAD0_opsz48.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.80.0"
