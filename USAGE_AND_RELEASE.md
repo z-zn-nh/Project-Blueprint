@@ -16,6 +16,14 @@
 - 在 VS Code 资源管理器中 **右键某个文件夹**
 - 选择：`在蓝图中打开`
 
+### 直接生成项目蓝图（跳过 Webview）
+
+- 在 VS Code 资源管理器中 **右键某个文件夹**
+- 选择：`生成项目蓝图`
+- 会直接在该文件夹根目录生成 `blueprint*.md` 并自动打开
+
+> 说明：该方式导出的是“扫描到的真实目录结构快照”（不包含 Webview 内的编辑结果）。
+
 ### Webview 快捷键
 
 在蓝图 Webview 内：
@@ -51,12 +59,17 @@
 
 在 `project-blueprint` 目录下：
 
+> 注意：必须在包含扩展 `package.json` 的目录执行命令（也就是本仓库的 `project-blueprint/` 目录）。
+> 如果你在上一级目录执行，会出现：`Extension manifest not found: ...\\package.json`
+
 - `npm install`
 - `npm run compile`
 
 ### 2) 打包 `.vsix`
 
 推荐使用 `vsce`：
+
+> 同样需要在 `project-blueprint/` 目录执行。
 
 - `npx @vscode/vsce package`
 

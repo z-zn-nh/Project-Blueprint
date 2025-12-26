@@ -184,6 +184,102 @@ export function activate(context: vscode.ExtensionContext) {
       }
     );
 
+    const generateBlueprintMarkdownDisposable = vscode.commands.registerCommand(
+      "project-blueprint.generateBlueprintMarkdown",
+      async (uri?: vscode.Uri) => {
+        output.appendLine(
+          `[command:generateBlueprintMarkdown] invoked uri=${
+            uri ? uri.toString(true) : "<empty>"
+          }`
+        );
+
+        if (!uri) {
+          vscode.window.showErrorMessage(
+            "请选择一个文件夹后再使用“生成项目蓝图”。"
+          );
+          output.appendLine(
+            "[command:generateBlueprintMarkdown] aborted: uri is empty"
+          );
+          return;
+        }
+
+        try {
+          const stat = await vscode.workspace.fs.stat(uri);
+          if (stat.type !== vscode.FileType.Directory) {
+            vscode.window.showErrorMessage("“生成项目蓝图”仅支持文件夹。");
+            output.appendLine(
+              `[command:generateBlueprintMarkdown] aborted: not a directory type=${stat.type}`
+            );
+            return;
+          }
+        } catch (err) {
+          vscode.window.showErrorMessage(
+            `无法读取所选目录信息：${
+              err instanceof Error ? err.message : String(err)
+            }`
+          );
+          output.appendLine(
+            `[command:generateBlueprintMarkdown] aborted: stat failed err=${
+              err instanceof Error ? err.stack ?? err.message : String(err)
+            }`
+          );
+          return;
+        }
+
+        vscode.window.showInformationMessage(
+          `Project Blueprint：正在生成 ${uri.fsPath} 的项目蓝图`
+        );
+        output.appendLine(
+          `[command:generateBlueprintMarkdown] generating for ${uri.fsPath}`
+        );
+
+        let tree: BlueprintTreeNode;
+        try {
+          tree = await vscode.window.withProgress(
+            {
+              location: vscode.ProgressLocation.Window,
+              title: "Project Blueprint: Scanning folder...",
+            },
+            async () => {
+              const rootName = path.basename(uri.fsPath) || "Blueprint";
+              return scanFolderToTree(uri, rootName);
+            }
+          );
+          output.appendLine("[generateBlueprintMarkdown] scan done");
+        } catch (err) {
+          vscode.window.showErrorMessage(
+            `扫描目录失败：${err instanceof Error ? err.message : String(err)}`
+          );
+          output.appendLine(
+            `[generateBlueprintMarkdown] scan failed err=${
+              err instanceof Error ? err.stack ?? err.message : String(err)
+            }`
+          );
+          return;
+        }
+
+        try {
+          const md = treeToTreeMarkdown(tree);
+          const exportUri = await exportTreeMarkdownToFolder(uri, md);
+          output.appendLine(
+            `[generateBlueprintMarkdown] written file=${exportUri.fsPath}`
+          );
+          vscode.window.showInformationMessage(`已生成：${exportUri.fsPath}`);
+          const doc = await vscode.workspace.openTextDocument(exportUri);
+          await vscode.window.showTextDocument(doc, { preview: false });
+        } catch (err) {
+          vscode.window.showErrorMessage(
+            `生成失败：${err instanceof Error ? err.message : String(err)}`
+          );
+          output.appendLine(
+            `[generateBlueprintMarkdown] failed err=${
+              err instanceof Error ? err.stack ?? err.message : String(err)
+            }`
+          );
+        }
+      }
+    );
+
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
@@ -198,7 +294,11 @@ export function activate(context: vscode.ExtensionContext) {
       }
     );
 
-    context.subscriptions.push(openInBlueprintDisposable, disposable);
+    context.subscriptions.push(
+      openInBlueprintDisposable,
+      generateBlueprintMarkdownDisposable,
+      disposable
+    );
     output.appendLine("[activate] end");
   } catch (err) {
     output.appendLine(

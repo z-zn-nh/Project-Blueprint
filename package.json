@@ -12,6 +12,7 @@
   "activationEvents": [
     "onStartupFinished",
     "onCommand:project-blueprint.openInBlueprint",
+    "onCommand:project-blueprint.generateBlueprintMarkdown",
     "onCommand:project-blueprint.helloWorld"
   ],
   "main": "./dist/extension.js",
@@ -23,6 +24,11 @@
         "category": "Project Blueprint"
       },
       {
+        "command": "project-blueprint.generateBlueprintMarkdown",
+        "title": "生成项目蓝图",
+        "category": "Project Blueprint"
+      },
+      {
         "command": "project-blueprint.helloWorld",
         "title": "Hello World"
       }
@@ -31,6 +37,10 @@
       "explorer/context": [
         {
           "command": "project-blueprint.openInBlueprint",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "project-blueprint.generateBlueprintMarkdown",
           "when": "explorerResourceIsFolder"
         }
       ]
