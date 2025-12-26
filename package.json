@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "icon": "media/account_tree_128dp_1F1F1F_FILL0_wght400_GRAD0_opsz48.png",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -31,7 +31,6 @@
     "structure"
   ],
   "activationEvents": [
-    "onStartupFinished",
     "onCommand:project-blueprint.openInBlueprint",
     "onCommand:project-blueprint.generateBlueprintMarkdown",
     "onCommand:project-blueprint.helloWorld"
@@ -65,6 +64,16 @@
           "when": "explorerResourceIsFolder"
         }
       ]
+    },
+    "configuration": {
+      "title": "Project Blueprint",
+      "properties": {
+        "project-blueprint.showNotifications": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show information notifications (toast messages) when running commands."
+        }
+      }
     }
   },
   "scripts": {

@@ -18,7 +18,18 @@ import * as path from "path";
 export function activate(context: vscode.ExtensionContext) {
   const output = vscode.window.createOutputChannel("Project Blueprint");
   context.subscriptions.push(output);
-  output.show(true);
+
+  const shouldShowNotifications = (): boolean =>
+    vscode.workspace
+      .getConfiguration("project-blueprint")
+      .get<boolean>("showNotifications", true);
+
+  const notifyInfo = (message: string): void => {
+    if (!shouldShowNotifications()) {
+      return;
+    }
+    void vscode.window.showInformationMessage(message);
+  };
 
   try {
     output.appendLine("[activate] begin");
@@ -75,9 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // 2) 扫描目录：把磁盘文件夹转成内存树
-        vscode.window.showInformationMessage(
-          `Project Blueprint：正在打开 ${uri.fsPath}`
-        );
+        notifyInfo(`Project Blueprint：正在打开 ${uri.fsPath}`);
         output.appendLine(
           `[command:openInBlueprint] opening webview for ${uri.fsPath}`
         );
@@ -226,9 +235,7 @@ export function activate(context: vscode.ExtensionContext) {
           return;
         }
 
-        vscode.window.showInformationMessage(
-          `Project Blueprint：正在生成 ${uri.fsPath} 的项目蓝图`
-        );
+        notifyInfo(`Project Blueprint：正在生成 ${uri.fsPath} 的项目蓝图`);
         output.appendLine(
           `[command:generateBlueprintMarkdown] generating for ${uri.fsPath}`
         );
@@ -264,7 +271,7 @@ export function activate(context: vscode.ExtensionContext) {
           output.appendLine(
             `[generateBlueprintMarkdown] written file=${exportUri.fsPath}`
           );
-          vscode.window.showInformationMessage(`已生成：${exportUri.fsPath}`);
+          notifyInfo(`已生成：${exportUri.fsPath}`);
           const doc = await vscode.workspace.openTextDocument(exportUri);
           await vscode.window.showTextDocument(doc, { preview: false });
         } catch (err) {
@@ -288,9 +295,7 @@ export function activate(context: vscode.ExtensionContext) {
       () => {
         // The code you place here will be executed every time your command is executed
         // Display a message box to the user
-        vscode.window.showInformationMessage(
-          "Hello World from project_blueprint!"
-        );
+        notifyInfo("Hello World from project_blueprint!");
       }
     );
 
