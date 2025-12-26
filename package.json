@@ -1,13 +1,34 @@
 {
   "name": "project-blueprint",
-  "displayName": "project_blueprint",
-  "description": "",
+  "displayName": "Project Blueprint",
+  "description": "在 VS Code 中扫描项目目录为“蓝图”，在 Webview 里编辑（仅内存，不改真实文件），并导出 tree 风格的 Markdown 结构快照。",
+  "publisher": "zining",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/z-zn-nh/Project-Blueprint.git"
+  },
+  "homepage": "https://github.com/z-zn-nh/Project-Blueprint",
+  "bugs": {
+    "url": "https://github.com/z-zn-nh/Project-Blueprint/issues"
+  },
+  "license": "MIT",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
+    "Productivity",
     "Other"
+  ],
+  "keywords": [
+    "blueprint",
+    "project",
+    "tree",
+    "markdown",
+    "folder",
+    "directory",
+    "scaffold",
+    "structure"
   ],
   "activationEvents": [
     "onStartupFinished",
