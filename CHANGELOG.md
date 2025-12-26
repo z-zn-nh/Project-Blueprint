@@ -8,3 +8,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Initial release
 - Added: Explorer context menu command "生成项目蓝图" to generate `blueprint*.md` directly in the selected folder.
+- Docs: Update README with screenshots.
